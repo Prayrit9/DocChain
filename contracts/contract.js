@@ -27,7 +27,7 @@ function registration(state, action) {
 
 function newDoc(state, action) {
   ContractAssert(
-  state.data[action.caller].address === action.caller,"Wrong address to access your data");
+    state.data[action.caller].address === action.caller, "Wrong address to access your data");
   const fileName = action.input.fileName;
   const ipfs = action.input.ipfs;
   const date = action.input.date;
@@ -45,7 +45,7 @@ function fetch(state, action) {
 
 function giveAccess(state, action) {
   ContractAssert(
-  state.data[action.caller].address === action.caller,"Wrong address to access your data");
+    state.data[action.caller].address === action.caller, "Wrong address to access your data");
   const id = action.input.id;
 
   state.data[action.caller].share.push(id);
@@ -53,4 +53,21 @@ function giveAccess(state, action) {
   map[action.caller] = state.data[action.caller].share;
   state.data[action.caller].share = action.caller in map;
   return { state };
+}
+
+export default function handle(state, action) {
+  const input = action.input;
+
+  switch (input.function) {
+    case "registration":
+      return registration(state, action);
+    case "newDoc":
+      return newDoc(state, action);
+    case "fetch":
+      return fetch(state, action);
+    case "giveAccess":
+      return giveAccess(state, action);
+    default:
+      throw new ContractError(`No function supplied or function not recognised: "${input.function}"`);
+  }
 }

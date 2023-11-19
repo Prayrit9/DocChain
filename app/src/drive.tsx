@@ -101,8 +101,9 @@ export default function Drive({ wallet }: { wallet: any }) {
       contractTxId: CNT_TX_ID,
       options: { function: "fetchMine" }
     })
-    const docs = tx.viewContract
+    const docs = tx.viewContract.result.docs
     console.log(docs)
+    setMyFiles(docs)
 
     // const d: Item[] = []
     // Object.keys(docs).forEach((key) => {
@@ -174,7 +175,7 @@ export default function Drive({ wallet }: { wallet: any }) {
             <div className="flex justify-between items-center bg-blue-50 h-[100px] rounded-lg p-3 my-3 ring-1 ring-black/30">
               <Dropzone
                 onDrop={(files: File[]) => setFile(files[0])}
-                onReject={(files: File[]) => console.log('rejected files', files)}
+                onReject={() => console.log('rejected files')}
                 maxSize={3 * 1024 ** 2}
                 accept={['image/*', 'application/pdf']}
                 className='w-full'

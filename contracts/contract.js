@@ -1,73 +1,80 @@
 function registration(state, action) {
-  const addrs = action.caller;
+  const me = action.caller;
   const role = action.input.role;
-  const fileName = action.input.fileName;
-  const ipfs = action.input.ipfs;
-  const date = action.input.date;
-  const id = action.input.id;
-  const arr = [];
-  arr.push(id);
-  // const shareTo=action.input.shareTo;
 
-  const map = {};
-  map[addrs] = arr;
-
-  state.data[action.caller] = {
-    address: addrs,
+  const meData = {
     role: role,
-    docs: {
-      fileName: fileName,
-      ipfs: ipfs,
-      date: date,
-    },
-    share: addrs in map,
-  };
+    docs: {},
+    sharedWithMe: {}
+  }
+  state.data[me] = meData;
+
   return { state };
 }
 
 function newDoc(state, action) {
-  ContractAssert(
-    state.data[action.caller].address === action.caller, "Wrong address to access your data");
-  const fileName = action.input.fileName;
-  const ipfs = action.input.ipfs;
-  const date = action.input.date;
+  const me = action.caller;
+  const dcount = parseInt(state.dcount)
 
-  state.data[action.caller].docs.fileName = fileName;
-  state.data[action.caller].docs.ipfs = ipfs;
-  state.data[action.caller].docs.date = date;
+  const docData = {
+    fileName: action.input.fileName,
+    date: (new Date()).toString(),
+    hash: action.input.hash,
+    sharedTo: []
+  }
+
+  state.data[me].docs[(dcount + 1).toString()] = docData;
+  state.dcount = (dcount + 1);
   return { state };
 }
 
-function fetch(state, action) {
-  const addrs = action.input.addrs;
-  return { result: state.data[addrs] };
+function fetchMine(state, action) {
+  const me = action.input.addrs;
+  return { result: state.data[me] };
 }
 
 function giveAccess(state, action) {
-  ContractAssert(
-    state.data[action.caller].address === action.caller, "Wrong address to access your data");
-  const id = action.input.id;
+  const me = action.caller;
 
-  state.data[action.caller].share.push(id);
-  const map = {};
-  map[action.caller] = state.data[action.caller].share;
-  state.data[action.caller].share = action.caller in map;
+  const docId = action.input.docId;
+  const shareWith = action.input.shareWith;
+
+  const myDocs = state.data[me].docs;
+
+  const myDocIds = Object.keys(myDocs);
+
+  if (!myDocIds.includes(docId)) {
+    throw new ContractError(`You don't own this doc`);
+  }
+
+  const prevSharedWithMe = myDocs[docId].sharedWithMe[shareWith];
+  if (!prevSharedWithMe) {
+    prevSharedWithMe = [];
+  }
+  if (!prevSharedWithMe.includes(shareWith)) {
+    prevSharedWithMe.append(shareWith);
+  }
+
+  const mySharedTo = myDocs[docId].sharedTo;
+
+  myDocs[docId].sharedWithMe[shareWith] = prevSharedWithMe;
+  state.data[me].docs = myDocs;
+
   return { state };
 }
 
-export default function handle(state, action) {
-  const input = action.input;
-
+export function handle(state, action) {
+  const input = action.input
   switch (input.function) {
-    case "registration":
-      return registration(state, action);
-    case "newDoc":
-      return newDoc(state, action);
-    case "fetch":
-      return fetch(state, action);
-    case "giveAccess":
-      return giveAccess(state, action);
+    case 'registration':
+      return registration(state, action)
+    case 'newDoc':
+      return newDoc(state, action)
+    case 'fetchMine':
+      return fetchMine(state, action)
+    case 'giveAccess':
+      return giveAccess(state, action)
     default:
-      throw new ContractError(`No function supplied or function not recognised: "${input.function}"`);
+      throw new ContractError(`Errrrorrrrrrrr`)
   }
 }

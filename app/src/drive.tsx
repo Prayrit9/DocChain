@@ -7,6 +7,13 @@ import trash from "./assets/trash.svg"
 import share from "./assets/share.svg"
 import { useEffect, useState } from 'react';
 
+const toBase64 = (file: File) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = reject;
+});
+
 type Item = {
   filename: string,
   date: string,
@@ -63,7 +70,10 @@ export default function Drive({ wallet }: { wallet: any }) {
   const [file, setFile] = useState<File | null>(null)
 
   useEffect(() => {
-    console.log(file)
+    if (file)
+      toBase64(file).then((res) => {
+        console.log(res)
+      })
   }, [file])
 
   return (
@@ -74,8 +84,8 @@ export default function Drive({ wallet }: { wallet: any }) {
           <div className="overflow-scroll rounded-[50px] p-2 h-[70vh]">
             <div className="flex justify-between items-center bg-green-100 h-[100px] rounded-lg p-3 my-3 ring-1 ring-black/30">
               <Dropzone
-                onDrop={(files) => setFile(files[0])}
-                onReject={(files) => console.log('rejected files', files)}
+                onDrop={(files: File[]) => setFile(files[0])}
+                onReject={(files: File[]) => console.log('rejected files', files)}
                 maxSize={3 * 1024 ** 2}
                 accept={IMAGE_MIME_TYPE}
                 className='w-full'

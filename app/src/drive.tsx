@@ -27,7 +27,7 @@ const data: Item[] = [
 ]
 
 const UploadedItem = (data: Item) => {
-  return <div className="flex justify-between items-center bg-white rounded-lg p-3 my-3">
+  return <div className="flex justify-between items-center bg-white rounded-xl p-3 my-3">
     <div className="flex gap-3 items-center">
       {data.url != "#" ? <img src="#" width={20} /> : <div className="text-4xl">📄</div>}
       <div className="flex flex-col">
@@ -36,9 +36,9 @@ const UploadedItem = (data: Item) => {
       </div>
     </div>
     <div className="text-sm text-center">Shared with {50} others</div>
-    <div className="flex gap-2">
-      <button className="bg-green-500 p-1 rounded-md"><img src={share} alt="delete" width={30} className="invert" /></button>
-      <button className="bg-red-500 p-1.5 rounded-md"><img src={trash} alt="delete" width={22} className="invert" /></button>
+    <div className="flex gap-5">
+      <button className=""><img src={share} alt="share" width={30} /></button>
+      <button className=""><img src={trash} alt="delete" width={30} /></button>
     </div>
   </div>
 }
@@ -53,7 +53,7 @@ const SharedItem = (data: Item) => {
       </div>
     </div>
     <div className="flex gap-2">
-      <button className="bg-red-500 p-1.5 rounded-md"><img src={trash} alt="delete" width={22} className="invert" /></button>
+      <button><img src={trash} alt="delete" width={30} /></button>
     </div>
   </div>
 }

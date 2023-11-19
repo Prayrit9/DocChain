@@ -67,30 +67,6 @@ function giveAccess(state, action) {
 export function handle(state, action) {
   const input = action.input
   switch (input.function) {
-      // WRITE
-      case 'registration':
-          return registration(state, action)
-      case 'newDoc':
-          return newDoc(state, action)
-      case 'submitClaim':
-          return submitClaim(state, action)
-      case 'approveClaim':
-          return approveClaim(state, action)
-      // READ
-      case 'getBounties':
-          return getBounties(state)
-      case 'getBounty':
-          return getBounty(state, action)
-      case 'getBountiesForAddress':
-          return getBountiesForAddress(state, action)
-      default:
-          throw new ContractError(`No function supplied or function not recognised: "${input.function}".`)
-  }
-}
-
-export function handle(state, action) {
-  const input = action.input
-  switch (input.function) {
     case 'registration':
       return registration(state, action)
     case 'newDoc':

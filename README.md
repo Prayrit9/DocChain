@@ -1,9 +1,32 @@
 # Blockchain Based E-Vault
 
-Local ARweave test node
+Submission for the E-Suraksha hackathon at CU
 
-```
-npx arlocal
-```
+- [Blockchain Based E-Vault](#blockchain-based-e-vault)
+  - [Team members](#team-members)
+  - [Tech Stack](#tech-stack)
+- [How to run](#how-to-run)
+  - [Fork and Clone the repo](#fork-and-clone-the-repo)
 
-For Ardrive test check `db/README.md`# esuraksha-cu
+## Team members
+- [Ankush Singh](github.com/ankushKun)
+- [Ashutosh Mittal](github.com/Aashu1412)
+- [Prayrit](github.com/Prayrit9)
+- Parth Tiwari
+- Abhijeet Singh
+
+## Tech Stack
+
+- React
+- Vite
+- Arweave Blockchain
+- Arweave.app web wallet
+- arweavekit
+
+# How to run
+
+## Fork and Clone the repo
+
+```bash
+git clone https://github.com/<YOUR_USERNAME>/esuraksha-cu.git
+```

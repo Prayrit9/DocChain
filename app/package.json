@@ -17,6 +17,7 @@
     "@mantine/nprogress": "^7.2.2",
     "@tabler/icons-react": "^2.41.0",
     "arweave-wallet-connector": "^1.0.2",
+    "arweavekit": "^1.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-fade-in": "^2.0.1",

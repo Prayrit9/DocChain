@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+
 import Page from "./components/page";
 import FadeIn from "react-fade-in";
 import chain from "./assets/chain.svg";
@@ -7,8 +10,58 @@ import efficiency from "./assets/efficiency.svg";
 import decentralized from "./assets/decentralized.svg";
 import justice from "./assets/justice.svg";
 
+import deployment from "../deployment.json";
+import { writeContract, viewContractState } from "arweavekit/contract"
+
+const CNT_TX_ID = deployment.contractAddr
+const envr = deployment.network
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 export default function App({ wallet }: { wallet: any }) {
+  const [askRole, setAskRole] = useState(false)
+  const [role, setRole] = useState("")
+
+  async function register() {
+    if (role) {
+      const tx = await writeContract({
+        environment: envr == "mainnet" ? "mainnet" : "local",
+        wallet: "use_wallet",
+        contractTxId: CNT_TX_ID,
+        options: {
+          function: "register",
+          role: role
+        }
+      })
+      console.log(tx)
+      if (tx.result.status == 200) {
+        setAskRole(false)
+        toast.success(`Registered successfully`)
+      } else {
+        toast.error(`Error while registering ${tx.result.statusText}`)
+      }
+    }
+  }
+
+  window.addEventListener("WalletConnected", () => {
+    async function run() {
+      console.log(wallet.address)
+      if (!wallet.address) return
+      const tx = await viewContractState({
+        environment: envr == "mainnet" ? "mainnet" : "local",
+        contractTxId: CNT_TX_ID,
+        options: {
+          function: "iExist"
+        }
+      })
+      const exist = tx.viewContract.result
+      if (exist !== null) {
+        setAskRole(true)
+      }
+    }
+    run()
+  })
+
+
   return (
     <Page title="Home | DocChain" wallet={wallet}>
       <div className="flex flex-col gap-[80px]">
@@ -52,17 +105,17 @@ export default function App({ wallet }: { wallet: any }) {
           </div>
         </FadeIn>
       </div>
-      <div className="w-screen h-screen fixed top-0 left-0 bg-black/60 flex justify-center items-center">
+      {askRole && <div className="w-screen h-screen fixed top-0 left-0 bg-black/60 flex justify-center items-center">
         <div className="text-center flex items-center justify-center gap-3 opacity-100">
-          <select name="cars" id="cars" className="block h-[30px] w-[500px] rounded-3xl opacity-100 bg-white">
+          <select name="cars" id="cars" className="block h-[30px] w-[500px] rounded-3xl opacity-100 bg-white" onChange={e => setRole(e.target.value)}>
             <option>Judge</option>
             <option >Lawyer</option>
             <option >Clerk</option>
             <option >User</option>
           </select>
-          <button className=" bg-gray-100 h-[30px] w-[80px] rounded-lg">Register</button>
+          <button className=" bg-gray-100 h-[30px] w-[80px] rounded-lg" onClick={register}>Register</button>
         </div>
-      </div>
+      </div>}
     </Page>
   );
 }

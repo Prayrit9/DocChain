@@ -78,6 +78,7 @@ export default function Drive({ wallet }: { wallet: any }) {
   const [fileb64, setFileb64] = useState<string | null>(null)
   const [askName, setAskName] = useState<boolean>(false)
   const [filename, setFilename] = useState<string>("")
+  const [myFiles, setMyFiles] = useState<Item[]>([])
 
   useEffect(() => {
     if (file)
@@ -91,6 +92,38 @@ export default function Drive({ wallet }: { wallet: any }) {
       setAskName(true)
   }, [fileb64])
 
+  async function readMine() {
+    console.log(wallet.address)
+    if (!wallet.address) return
+    const tx = await viewContractState({
+      wallet: "use_wallet",
+      environment: deployment.network == "mainnet" ? "mainnet" : "local",
+      contractTxId: CNT_TX_ID,
+      options: { function: "fetchMine" }
+    })
+    const docs = tx.viewContract
+    console.log(docs)
+
+    // const d: Item[] = []
+    // Object.keys(docs).forEach((key) => {
+    //   d.push({
+    //     filename: docs[key].filename,
+    //     date: docs[key].date,
+    //     url: docs[key].url
+    //   })
+    // })
+    // setMyFiles(d)
+  }
+
+  window.addEventListener("WalletConnected", () => {
+    readMine()
+  })
+
+  useEffect(() => {
+    if (wallet.address)
+      readMine()
+  }, [wallet.address])
+
 
   async function pushToContract() {
     console.log(fileb64, filename)
@@ -102,7 +135,7 @@ export default function Drive({ wallet }: { wallet: any }) {
         options: {
           function: "newDoc",
           fileName: filename,
-          hash: "fileb64"
+          hash: fileb64
         },
         strategy: "arweave"
       })
@@ -176,7 +209,7 @@ export default function Drive({ wallet }: { wallet: any }) {
               </Dropzone>
             </div>
             {
-              data.map((item, i) => {
+              myFiles.map((item, i) => {
                 return <UploadedItem key={i} {...item} />
               })
             }

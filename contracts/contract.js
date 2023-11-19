@@ -1,3 +1,13 @@
+
+function iExist(state, action) {
+  const me = action.caller;
+  const myData = state.data[me];
+  if (!myData) {
+    return { result: false };
+  }
+  return { result: true };
+}
+
 function registration(state, action) {
   const me = action.caller;
   const role = action.input.role;
@@ -30,6 +40,14 @@ function newDoc(state, action) {
 
 function fetchMine(state, action) {
   const me = action.input.addrs;
+  if (!me) {
+    return {
+      result: {
+        docs: {},
+        sharedWithMe: {}
+      }
+    };
+  }
   return { result: state.data[me] };
 }
 
@@ -67,6 +85,8 @@ function giveAccess(state, action) {
 export function handle(state, action) {
   const input = action.input
   switch (input.function) {
+    case 'iExist':
+      return iExist(state, action)
     case 'registration':
       return registration(state, action)
     case 'newDoc':

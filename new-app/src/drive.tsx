@@ -1,6 +1,6 @@
-import { Group, Text, rem } from '@mantine/core';
+import { Group } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 import Page from "./components/page"
 import trash from "./assets/trash.svg"

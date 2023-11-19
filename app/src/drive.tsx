@@ -68,11 +68,11 @@ export default function Drive({ wallet }: { wallet: any }) {
 
   return (
     <Page wallet={wallet} title="My Docs | DocChain">
-      <div className="grid md:grid-cols-2 bg-gray-200/50 p-5 rounded-[50px] h-[77vh] m-0 relative">
+      <div className="grid md:grid-cols-2 bg-blue-200 shadow-sm p-5 rounded-[50px] h-[77vh] m-0 relative">
         <div>
           <div className="text-center underline underline-offset-4">My Documents</div>
           <div className="overflow-scroll rounded-[50px] p-2 h-[70vh]">
-            <div className="flex justify-between items-center bg-green-100 h-[100px] rounded-lg p-3 my-3 ring-1 ring-black/30">
+            <div className="flex justify-between items-center bg-blue-50 h-[100px] rounded-lg p-3 my-3 ring-1 ring-black/30">
               <Dropzone
                 onDrop={(files) => setFile(files[0])}
                 onReject={(files) => console.log('rejected files', files)}

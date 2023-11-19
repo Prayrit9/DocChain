@@ -13,7 +13,7 @@ export default function App({ wallet }: { wallet: any }) {
     <Page title="Home | DocChain" wallet={wallet}>
       <div className="flex flex-col gap-[80px]">
         <FadeIn delay={30} transitionDuration={200}>
-          <div className="flex items-center h-[80vh] justify-center text-center bg-gray-200 rounded-[50px]">
+          <div className="flex items-center h-[80vh] justify-center text-center bg-gradient-to-br from-blue-300 to-blue-100 rounded-[50px]">
             <FadeIn delay={200} transitionDuration={2000}>
               <div className=" flex text-[18vw]">
                 Doc<img src={chain} className="w-[18vw]"></img>
@@ -22,7 +22,8 @@ export default function App({ wallet }: { wallet: any }) {
             </FadeIn>
           </div>
         </FadeIn>
-        <div className="flex flex-col h-[80vh] bg-gray-200 rounded-[50px]">
+        <FadeIn delay={500} transitionDuration={3000}>
+        <div className="flex flex-col bg-gradient-to-br from-blue-200 to-white rounded-[50px]">
           <div className="text-center font-medium text-8xl my-10 text-blue-950">
             What do we offer?
           </div>
@@ -49,6 +50,7 @@ export default function App({ wallet }: { wallet: any }) {
             </li>
           </ul>
         </div>
+        </FadeIn>
       </div>
     </Page>
   );

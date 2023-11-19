@@ -23,34 +23,45 @@ export default function App({ wallet }: { wallet: any }) {
           </div>
         </FadeIn>
         <FadeIn delay={500} transitionDuration={3000}>
-        <div className="flex flex-col bg-gradient-to-br from-blue-200 to-white rounded-[50px]">
-          <div className="text-center font-medium text-8xl my-10 text-blue-950">
-            What do we offer?
+          <div className="flex flex-col bg-gradient-to-br from-blue-200 to-white rounded-[50px]">
+            <div className="text-center font-medium text-8xl my-10 text-blue-950">
+              What do we offer?
+            </div>
+            <ul className="flex flex-col text-center gap-[50px] text-slate-900 text-[3vw] font-normal my-12 mx-12">
+              <li className="flex justify-center">
+                Blockchain Security{" "}
+                <img src={shield} className="w-[3vw] mx-6"></img>
+              </li>
+              <li className="flex justify-center">
+                User-Friendly Collaboration{" "}
+                <img src={userfriendly} className="w-[3vw] mx-6"></img>
+              </li>
+              <li className="flex justify-center">
+                Decentralized Identity, Privacy Assurance{" "}
+                <img src={decentralized} className="w-[3vw] mx-6"></img>
+              </li>
+              <li className="flex justify-center">
+                Integration for Efficiency{" "}
+                <img src={efficiency} className="w-[3vw] mx-6"></img>
+              </li>
+              <li className="flex justify-center">
+                Transformative Access to Justice{" "}
+                <img src={justice} className="w-[3vw] mx-6"></img>
+              </li>
+            </ul>
           </div>
-          <ul className="flex flex-col text-center gap-[50px] text-slate-900 text-[3vw] font-normal my-12 mx-12">
-            <li className="flex justify-center">
-              Blockchain Security{" "}
-              <img src={shield} className="w-[3vw] mx-6"></img>
-            </li>
-            <li className="flex justify-center">
-              User-Friendly Collaboration{" "}
-              <img src={userfriendly} className="w-[3vw] mx-6"></img>
-            </li>
-            <li className="flex justify-center">
-              Decentralized Identity, Privacy Assurance{" "}
-              <img src={decentralized} className="w-[3vw] mx-6"></img>
-            </li>
-            <li className="flex justify-center">
-              Integration for Efficiency{" "}
-              <img src={efficiency} className="w-[3vw] mx-6"></img>
-            </li>
-            <li className="flex justify-center">
-              Transformative Access to Justice{" "}
-              <img src={justice} className="w-[3vw] mx-6"></img>
-            </li>
-          </ul>
-        </div>
         </FadeIn>
+      </div>
+      <div className="w-screen h-screen fixed top-0 left-0 bg-black/60 flex justify-center items-center">
+        <div className="text-center flex items-center justify-center gap-3 opacity-100">
+          <select name="cars" id="cars" className="block h-[30px] w-[500px] rounded-3xl opacity-100 bg-white">
+            <option>Judge</option>
+            <option >Lawyer</option>
+            <option >Clerk</option>
+            <option >User</option>
+          </select>
+          <button className=" bg-gray-100 h-[30px] w-[80px] rounded-lg">Register</button>
+        </div>
       </div>
     </Page>
   );

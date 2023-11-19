@@ -56,7 +56,7 @@ export default function Navbar({ wallet }: { wallet: any }) {
     }
 
     return <nav className="flex justify-between items-center border-black">
-        <Link to="/" className="font-light tracking-widest hover:font-medium text-2xl hover:tracking-[5px] transition-all duration-200">BlockStore</Link>
+        <Link to="/" className="font-light tracking-widest hover:font-medium text-2xl hover:tracking-[5px] transition-all duration-200">Doc🔗Chain</Link>
         <div className="hidden sm:flex gap-10 items-center">
             {
                 MenuLinks.map((link, i) => {

@@ -2,9 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ArweaveWebWallet, type State, type AppInfo } from 'arweave-wallet-connector'
+import { MantineProvider, createTheme } from '@mantine/core';
 import App from './App.tsx'
 import Drive from './drive.tsx'
 import './index.css'
+import '@mantine/dropzone/styles.css';
 
 const state: State = { url: 'arweave.app', showIframe: false, usePopup: false, requirePopup: false, keepPopup: false, connected: false }
 const appInfo: AppInfo = {
@@ -32,11 +34,13 @@ wallet.on('disconnect', () => {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App wallet={wallet} />} />
-        <Route path="/drive" element={<Drive wallet={wallet} />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
+    <MantineProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App wallet={wallet} />} />
+          <Route path="/drive" element={<Drive wallet={wallet} />} />
+        </Routes>
+      </BrowserRouter>
+    </MantineProvider>
+  </React.StrictMode>
 )

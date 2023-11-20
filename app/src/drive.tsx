@@ -1,15 +1,13 @@
 import { Group } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone } from '@mantine/dropzone';
-
 import deployment from "../deployment.json"
-
 import Page from "./components/page"
 import trash from "./assets/trash.svg"
 import share from "./assets/share.svg"
+import preview from "./assets/preview.svg"
 import { useEffect, useState } from 'react';
 import { toast } from "react-hot-toast"
-
 import { writeContract, viewContractState } from "arweavekit/contract"
 
 const CNT_TX_ID = deployment.contractAddr
@@ -51,6 +49,7 @@ const UploadedItem = (data: Item) => {
     </div>
     <div className="text-sm text-center">Shared with {50} others</div>
     <div className="flex gap-5">
+      <button className=""><img src={preview} alt="delete" width={30} /></button>
       <button className=""><img src={share} alt="share" width={30} /></button>
       <button className=""><img src={trash} alt="delete" width={30} /></button>
     </div>
@@ -168,7 +167,7 @@ export default function Drive({ wallet }: { wallet: any }) {
           </div>
         </div>
       </div>}
-      <div className="grid md:grid-cols-2 bg-blue-200 shadow-sm p-5 rounded-[50px] h-[77vh] m-0 relative">
+      <div className="grid md:grid-cols-2 bg-gradient-to-b from-blue-300 to-blue-100 shadow-sm p-5 rounded-[30px] h-[77vh] m-0 relative">
         <div>
           <div className="text-center underline underline-offset-4">My Documents</div>
           <div className="overflow-scroll rounded-[50px] p-2 h-[70vh]">

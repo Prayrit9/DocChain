@@ -55,7 +55,7 @@ const upload_input_file = (
   console.log(`Uploading File ${input_file_name} ...`);
   const url = `${API_BASE_URL}/v2/files/${IB_INPUT_FILE_DIR}${input_file_name}`;
   const upload_resp = axios
-    .put(url, input_file_data, { headers: API_HEADERS })
+    .put(url, input_file_data,  API_HEADERS )
     .then((res) => {
       console.log(res.data);
     })
@@ -130,6 +130,18 @@ const get_results = (job_id) => {
 
   console.log("Downloading Results");
 
+
+axios.get('your_api_endpoint')
+.then(response => {
+  const outputFolder = response.data.results[0].output_folder;
+  console.log('Output Folder:', outputFolder);
+})
+.catch(error => {
+  console.error('Error:', error.message);
+});
+
+
+
   /////////////////////////////////////////////////
 
   // code left
@@ -137,17 +149,16 @@ const get_results = (job_id) => {
   /////////////////////////////////////////////
 };
 
-const input_filepaths = FILENAMES
-for (var input_filepath in input_filepaths){
-    const input_file_data = read_input_file("/home/ubuntu/project/e-suraksha/esuraksha-cu/instabase/lo.jpeg")
-    upload_input_file(IB_INPUT_FILE_DIR, input_file_data, input_filepath)
+const input_filepaths = FILENAMES;
+for (var input_filepath in input_filepaths) {
+  const input_file_data = read_input_file(
+    "/home/ubuntu/project/e-suraksha/esuraksha-cu/instabase/lo.jpeg"
+  );
+  upload_input_file(IB_INPUT_FILE_DIR, input_file_data, input_filepath);
 }
-const job_id = run_app(IB_INPUT_FILE_DIR, APP_NAME)
-const results = get_results(job_id)
-print(results)
-
-
-
+const job_id = run_app(IB_INPUT_FILE_DIR, APP_NAME);
+const results = get_results(job_id);
+print(results);
 
 // read_input_file(
 //   "/home/ubuntu/project/e-suraksha/esuraksha-cu/instabase/lo.jpeg"

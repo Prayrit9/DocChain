@@ -24,7 +24,8 @@ const toBase64 = (file: File) => new Promise((resolve, reject) => {
 type Item = {
   filename: string,
   date: string,
-  url: string
+  url: string,
+  sharedWith: string[]
 }
 
 const data: Item[] = [
@@ -43,13 +44,13 @@ const data: Item[] = [
 const UploadedItem = (data: Item) => {
   return <div className="flex justify-between items-center bg-white rounded-xl p-3 my-3">
     <div className="flex gap-3 items-center">
-      {data.url != "#" ? <img src="#" width={20} /> : <div className="text-4xl">📄</div>}
+      {data.url != "#" ? <img src={data.url} width={20} /> : <div className="text-4xl">📄</div>}
       <div className="flex flex-col">
         <span className="text-lg">{data.filename}</span>
         <span className="text-sm text-gray-500">{data.date}</span>
       </div>
     </div>
-    <div className="text-sm text-center">Shared with {50} others</div>
+    <div className="text-sm text-center">Shared with {data.sharedWith?.length | 0} others</div>
     <div className="flex gap-5">
       <button className=""><img src={share} alt="share" width={30} /></button>
       <button className=""><img src={trash} alt="delete" width={30} /></button>
@@ -83,6 +84,7 @@ export default function Drive({ wallet }: { wallet: any }) {
   useEffect(() => {
     if (file)
       toBase64(file).then((res) => {
+        console.log(res)
         setFileb64(res as string)
       })
   }, [file])
@@ -99,21 +101,23 @@ export default function Drive({ wallet }: { wallet: any }) {
       wallet: "use_wallet",
       environment: deployment.network == "mainnet" ? "mainnet" : "local",
       contractTxId: CNT_TX_ID,
-      options: { function: "fetchMine" }
+      options: { function: "fetchMine" },
+      strategy: "both"
     })
     const docs = tx.viewContract.result.docs
     console.log(docs)
-    setMyFiles(docs)
+    // setMyFiles(docs)
 
-    // const d: Item[] = []
-    // Object.keys(docs).forEach((key) => {
-    //   d.push({
-    //     filename: docs[key].filename,
-    //     date: docs[key].date,
-    //     url: docs[key].url
-    //   })
-    // })
-    // setMyFiles(d)
+    const d: Item[] = []
+    Object.keys(docs).forEach((key) => {
+      d.push({
+        filename: docs[key].fileName,
+        date: docs[key].date,
+        url: docs[key].hash
+      })
+    })
+    console.log(d)
+    setMyFiles(d)
   }
 
   window.addEventListener("WalletConnected", () => {
@@ -147,6 +151,7 @@ export default function Drive({ wallet }: { wallet: any }) {
         setFileb64(null)
         setFilename("")
         toast.success(`File uploaded successfully`)
+        readMine()
       } else {
         toast.error(`Error while uploading file ${tx.result.statusText}`)
       }

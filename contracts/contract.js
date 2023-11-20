@@ -33,14 +33,17 @@ function newDoc(state, action) {
     sharedTo: []
   }
 
+  console.log(docData);
+
   state.data[me].docs[(dcount + 1).toString()] = docData;
   state.dcount = (dcount + 1);
   return { state };
 }
 
 function fetchMine(state, action) {
-  const me = action.input.addrs;
-  if (!me) {
+  const me = action.caller;
+  const meData = state.data[me];
+  if (!meData) {
     return {
       result: {
         docs: {},
@@ -48,7 +51,7 @@ function fetchMine(state, action) {
       }
     };
   }
-  return { result: state.data[me] };
+  return { result: meData };
 }
 
 function giveAccess(state, action) {

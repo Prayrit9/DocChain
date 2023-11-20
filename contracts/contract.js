@@ -12,11 +12,14 @@ function registration(state, action) {
   const me = action.caller;
   const role = action.input.role;
 
+  if (iExist(state, action).result) return { state };
+
   const meData = {
     role: role,
     docs: {},
     sharedWithMe: {}
   }
+
   state.data[me] = meData;
 
   return { state };
@@ -24,7 +27,7 @@ function registration(state, action) {
 
 function newDoc(state, action) {
   const me = action.caller;
-  const dcount = parseInt(state.dcount)
+  const dcount = state.dcount + 1
 
   const docData = {
     fileName: action.input.fileName,
@@ -35,8 +38,11 @@ function newDoc(state, action) {
 
   console.log(docData);
 
-  state.data[me].docs[(dcount + 1).toString()] = docData;
-  state.dcount = (dcount + 1);
+  const myDocs = state.data[me].docs;
+  myDocs[dcount] = docData;
+
+  // state.data[me].docs = myDocs;
+  state.dcount = dcount;
   return { state };
 }
 
@@ -86,8 +92,7 @@ function giveAccess(state, action) {
 }
 
 export function handle(state, action) {
-  const input = action.input
-  switch (input.function) {
+  switch (action.input.function) {
     case 'iExist':
       return iExist(state, action)
     case 'registration':

@@ -5,7 +5,7 @@ import deployment from "../deployment.json"
 import Page from "./components/page"
 import trash from "./assets/trash.svg"
 import share from "./assets/share.svg"
-import preview from "./assets/preview.svg"
+import previewImg from "./assets/preview.svg"
 import { useEffect, useState } from 'react';
 import { toast } from "react-hot-toast"
 import { writeContract, viewContractState } from "arweavekit/contract"
@@ -30,17 +30,22 @@ const data: Item[] = [
   {
     filename: "sample.txt",
     date: "2021-08-20",
-    url: "#"
+    url: "#",
+    sharedWith: ["0x1234567890"]
   },
   {
     filename: "sample.txt",
     date: "2021-08-20",
-    url: "#"
+    url: "#",
+    sharedWith: ["0x1234567890", "0x1234567890"]
   }
 ]
 
 const UploadedItem = (data: Item) => {
+  const [preview, setPreview] = useState<boolean>(false)
+
   return <div className="flex justify-between items-center bg-white rounded-xl p-3 my-3">
+    {preview && <img src={data.url} className='h-screen w-screen fixed left-0 top-0 object-center object-contain' onClick={() => setPreview(false)} />}
     <div className="flex gap-3 items-center">
       {data.url != "#" ? <img src={data.url} width={20} /> : <div className="text-4xl">📄</div>}
       <div className="flex flex-col">
@@ -50,7 +55,7 @@ const UploadedItem = (data: Item) => {
     </div>
     <div className="text-sm text-center">Shared with {data.sharedWith?.length | 0} others</div>
     <div className="flex gap-5">
-      <button className=""><img src={preview} alt="delete" width={30} /></button>
+      <button className="" onClick={() => setPreview(true)}><img src={previewImg} alt="preview" width={30} /></button>
       <button className=""><img src={share} alt="share" width={30} /></button>
       <button className=""><img src={trash} alt="delete" width={30} /></button>
     </div>
@@ -101,7 +106,7 @@ export default function Drive({ wallet }: { wallet: any }) {
       environment: deployment.network == "mainnet" ? "mainnet" : "local",
       contractTxId: CNT_TX_ID,
       options: { function: "fetchMine" },
-      strategy: "both"
+      strategy: "arweave"
     })
     const docs = tx.viewContract.result.docs
     console.log(docs)
@@ -112,7 +117,8 @@ export default function Drive({ wallet }: { wallet: any }) {
       d.push({
         filename: docs[key].fileName,
         date: docs[key].date,
-        url: docs[key].hash
+        url: docs[key].hash,
+        sharedWith: docs[key].sharedTo
       })
     })
     console.log(d)
@@ -213,6 +219,11 @@ export default function Drive({ wallet }: { wallet: any }) {
                 </Group>
               </Dropzone>
             </div>
+            {
+              data.map((item, i) => {
+                return <UploadedItem key={i} {...item} />
+              })
+            }
             {
               myFiles.map((item, i) => {
                 return <UploadedItem key={i} {...item} />

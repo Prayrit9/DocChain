@@ -30,7 +30,8 @@ export default function App({ wallet }: { wallet: any }) {
         options: {
           function: "register",
           role: role
-        }
+        },
+        strategy: "arweave"
       })
       console.log(tx)
       if (tx.result.status == 200) {
@@ -51,10 +52,11 @@ export default function App({ wallet }: { wallet: any }) {
         contractTxId: CNT_TX_ID,
         options: {
           function: "iExist"
-        }
+        },
+        strategy: "arweave"
       })
       const exist = tx.viewContract.result
-      if (exist !== null) {
+      if (!exist) {
         setAskRole(true)
       }
     }
